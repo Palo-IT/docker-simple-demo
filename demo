@@ -1,0 +1,25 @@
+# cleanup initial
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q) -f
+
+# 1. cr?ation de l'image
+docker build . --tag demo
+docker images
+
+# 2. ex?cution du conteneur
+docker run --name=demo-cont demo
+docker ps -a
+
+# 3. on pousse l'image sur dockerhub
+docker tag demo XXX/demo
+docker login -u XXX
+docker push XXX/demo
+
+# 4. suppression du conteneur et de l'image
+docker rm demo-cont
+docker rmi demo debian:stretch
+docker images
+
+# 5. r?cup?ration de l'image
+docker pull XXX/demo
+docker run XXX/demo
